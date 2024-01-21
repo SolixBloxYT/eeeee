@@ -211,7 +211,7 @@ bot.on('messageCreate', async (message) => {
 
 bot.on('ready', () => {
     console.log(`Bot ${bot.user.tag} is logged in!`);
-    bot.user.setPresence({ activities: [{ name: 'Subscribe', type: 'PLAYING' }], status: 'online' });
+    bot.user.setPresence({ activities: [{ name: ';ping & ;uptime | @Testing Bot', type: 'PLAYING' }], status: 'online' });
 });
 
 bot.login(process.env.token);
