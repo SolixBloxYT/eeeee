@@ -93,7 +93,7 @@ if (command === 'botinfo') {
     const cpuUsagePercentage = ((cpuUsage.user + cpuUsage.system) / 1000000) * 100;
 
     // Replace 'getNumberOfCommands' with the actual count of your commands
-    const numberOfCommands = getNumberOfCommands(); // Replace with your function or variable
+    const numberOfCommands = getNumberOfCommands(12); // Replace with your function or variable
 
     const botInfoEmbed = new MessageEmbed()
         .setColor('#3498db')
@@ -101,7 +101,7 @@ if (command === 'botinfo') {
         .addField('Ping', `${bot.ws.ping}ms`, true)
         .addField('CPU', `${cpuUsagePercentage.toFixed(2)}%`, true)
         .addField('Memory', `${(heapUsed / 1024 / 1024).toFixed(2)}MB / ${(heapTotal / 1024 / 1024).toFixed(2)}MB`, true)
-        .addField('Commands', bot.numberOfCommands.toString(), true)
+        .addField('Commands', numberOfCommands.toString(), true)
         .addField('Guilds', bot.guilds.cache.size, true)
         .addField('Users', bot.users.cache.size, true);
 
