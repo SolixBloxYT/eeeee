@@ -25,7 +25,7 @@ bot.on('messageCreate', async (message) => {
     if (message.author.bot) return; // Ignore messages from other bots
 
     // !ping command
-if (message.content.toLowerCase() === '!ping') {
+if (message.content.toLowerCase() === ';ping') {
     const apiLatency = Math.round(bot.ws.ping);
     const botLatency = Date.now() - message.createdTimestamp;
 
@@ -39,7 +39,7 @@ if (message.content.toLowerCase() === '!ping') {
 }
 
     // !uptime command
-if (message.content.toLowerCase() === '!uptime') {
+if (message.content.toLowerCase() === ';uptime') {
     const uptime = Date.now() - startTime;
     const formattedUptime = formatUptime(uptime);
 
