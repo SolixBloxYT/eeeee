@@ -299,7 +299,7 @@ if (command === 'invite') {
     }
 });
 
-function setBotStatus(type = 'PLAYING', status = 'Hello World!') {
+function setBotStatus(type = 'PLAYING', status = ';ping | @Testing Bot') {
     bot.user.setActivity(status, { type: type });
 }
 
