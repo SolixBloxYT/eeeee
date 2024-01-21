@@ -118,22 +118,28 @@ if (command === 'botinfo') {
     message.reply({ embeds: [botInfoEmbed] });
 }
 
-    // ;userinfo command
-    if (command === 'userinfo') {
-    const targetUser = message.mentions.users.first() || message.author;
+   // ;userinfo command
+if (command === 'userinfo') {
+    const targetMember = message.mentions.members.first() || message.member;
+    const targetUser = targetMember.user;
+
+    // Fetch the member to get the most up-to-date information
+    await targetMember.fetch();
 
     const userInfoEmbed = new MessageEmbed()
         .setColor('#2ecc71')
         .setTitle('User Information')
         .addField('User Tag', targetUser.tag, true)
-        .addField('User ID', targetUser.id, true);
+        .addField('User ID', targetUser.id, true)
+        .addField('Joined Server', targetMember.joinedAt.toISOString(), true)
+        .addField('Joined Discord', targetUser.createdAt.toISOString(), true);
 
     message.reply({ embeds: [userInfoEmbed] });
     return;
 }
 
-    // ;serverinfo command
-    if (command === 'serverinfo') {
+// ;serverinfo command
+if (command === 'serverinfo') {
     const server_info_embed = new MessageEmbed()
         .setColor(0xe74c3c)
         .setTitle('Server Information')
@@ -144,6 +150,7 @@ if (command === 'botinfo') {
 
     await message.reply({ embeds: [server_info_embed] });
 }
+
     // ;avatar command
     if (command === 'avatar') {
         const targetUser = message.mentions.users.first() || message.author;
@@ -255,8 +262,8 @@ if (command === 'balance') {
         message.reply(`Prefix updated to \`${newPrefix}\`.`);
     }
 
-   // ;banner command
-    if (command === 'banner') {
+// ;banner command
+if (command === 'banner') {
     const targetUser = message.mentions.users.first() || message.author;
 
     const bannerURL = targetUser.bannerURL({
@@ -271,22 +278,23 @@ if (command === 'balance') {
             .setTitle(`${targetUser.tag}'s Banner`)
             .setImage(bannerURL);
 
-        message.reply({ embeds: [bannerEmbed] });
+        await message.reply({ embeds: [bannerEmbed] }); // Added await here
     } else {
-        message.reply(`${targetUser.tag} does not have a banner.`);
+        await message.reply(`${targetUser.tag} does not have a banner.`); // Added await here
     }
 }
 
 
     // ;servers command
-    if (command === 'servers') {
+if (command === 'servers') {
     const serversEmbed = new MessageEmbed()
         .setColor('#3498db')
         .setTitle('Server Count')
         .setDescription(`I am in ${bot.guilds.cache.size} servers.`);
 
-    message.reply({ embeds: [serversEmbed] });
+    await message.reply({ embeds: [serversEmbed] });
 }
+
 
 
 // Replace 'YOUR_CLIENT_ID' with your bot's client ID
