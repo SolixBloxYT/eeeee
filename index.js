@@ -44,12 +44,14 @@ bot.on('messageCreate', (message) => {
     }
 
     // !userinfo command
-    if (message.content.toLowerCase() === '!userinfo') {
+    if (message.content.toLowerCase().startsWith('!userinfo')) {
+        const targetUser = message.mentions.users.first() || message.author;
+
         const userInfoEmbed = new MessageEmbed()
             .setColor('#2ecc71')
             .setTitle('User Information')
-            .addField('Your Tag', message.author.tag, true)
-            .addField('Your ID', message.author.id, true);
+            .addField('User Tag', targetUser.tag, true)
+            .addField('User ID', targetUser.id, true);
 
         message.reply({ embeds: [userInfoEmbed] });
         return; // Do not send additional messages
