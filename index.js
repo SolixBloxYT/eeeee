@@ -1,4 +1,4 @@
-const { Client, Intents, MessageEmbed } = require('discord.js');
+    const { Client, Intents, MessageEmbed } = require('discord.js');
 const keepAliveServer = require('./keep_alive.js');
 
 const bot = new Client({
@@ -32,8 +32,23 @@ bot.on('guildMemberAdd', (member) => {
     userBalances.set(member.id, 1000);
 });
 
+});
+
 bot.on('messageCreate', async (message) => {
     if (message.author.bot) return; // Ignore messages from other bots
+
+    // Your existing command handling code here...
+
+    // Example command to change bot's status
+    if (message.content.toLowerCase() === ';setstatus') {
+        // Assuming the desired status is 'Watching Hello World!'
+        setBotStatus('WATCHING', 'Hello World!');
+        message.reply('Bot status updated!');
+    }
+});
+
+bot.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand()) return;
 
     // Respond to mentions of the bot
     if (message.mentions.has(bot.user)) {
