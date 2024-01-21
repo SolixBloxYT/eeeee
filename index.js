@@ -268,7 +268,7 @@ if (command === 'banner') {
 
 // ;servers command
 bot.on('messageCreate', (message) => {
-    const prefix = ';' // Your bot command prefix
+    const prefix = ';'; // Your bot command prefix
     if (message.author.bot || !message.content.startsWith(prefix)) {
         return;
     }
