@@ -93,7 +93,7 @@ if (command === 'botinfo') {
     const cpuUsagePercentage = ((cpuUsage.user + cpuUsage.system) / 1000000) * 100;
 
     // Replace 'getNumberOfCommands' with the actual count of your commands
-    const numberOfCommands = getNumberOfCommands(12); // Replace with your function or variable
+    const numberOfCommands = getNumberOfCommands(13); // Replace with your function or variable
 
     const botInfoEmbed = new MessageEmbed()
         .setColor('#3498db')
