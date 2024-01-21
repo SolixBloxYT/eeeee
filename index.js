@@ -233,9 +233,11 @@ bot.on('messageCreate', async (message) => {
         const targetUser = message.mentions.users.first() || message.author;
 
         // Check if the user has a banner
-        const bannerURL = targetUser.bannerURL({ size: 4096, format: 'png', dynamic: true });
+        const bannerURLPNG = targetUser.bannerURL({ size: 4096, format: 'png', dynamic: true });
+        const bannerURLJPEG = targetUser.bannerURL({ size: 4096, format: 'jpeg', dynamic: true });
+        const bannerURLWEBP = targetUser.bannerURL({ size: 4096, format: 'webp', dynamic: true });
 
-        if (!bannerURL) {
+        if (!bannerURLPNG && !bannerURLJPEG && !bannerURLWEBP) {
             message.reply(`${targetUser.tag} does not have a banner.`);
             return;
         }
@@ -243,7 +245,9 @@ bot.on('messageCreate', async (message) => {
         const bannerEmbed = new MessageEmbed()
             .setColor('#3498db')
             .setTitle(`${targetUser.tag}'s Banner`)
-            .setImage(bannerURL);
+            .addField('PNG', bannerURLPNG ? `[Link](${bannerURLPNG})` : 'Not available', true)
+            .addField('JPEG', bannerURLJPEG ? `[Link](${bannerURLJPEG})` : 'Not available', true)
+            .addField('WEBP', bannerURLWEBP ? `[Link](${bannerURLWEBP})` : 'Not available', true);
 
         message.reply({ embeds: [bannerEmbed] });
     }
