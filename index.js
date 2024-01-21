@@ -227,6 +227,26 @@ bot.on('messageCreate', async (message) => {
         serverPrefixes.set(message.guild.id, newPrefix);
         message.reply(`Prefix updated to \`${newPrefix}\`.`);
     }
+
+    // ;banner command
+    if (command === 'banner') {
+        const targetUser = message.mentions.users.first() || message.author;
+
+        // Check if the user has a banner
+        const bannerURL = targetUser.bannerURL({ size: 4096, format: 'png', dynamic: true });
+
+        if (!bannerURL) {
+            message.reply(`${targetUser.tag} does not have a banner.`);
+            return;
+        }
+
+        const bannerEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle(`${targetUser.tag}'s Banner`)
+            .setImage(bannerURL);
+
+        message.reply({ embeds: [bannerEmbed] });
+    }
 });
 
 bot.on('ready', () => {
