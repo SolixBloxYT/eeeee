@@ -287,9 +287,9 @@ if (command === 'invite') {
         .setDescription(`You can invite the bot to your server using the following link:\n[${invite_link}](${invite_link})`);
 
     await message.reply({ embeds: [invite_embed] });
+} else {
+    await bot.process_commands(message);
 }
-
-await bot.process_commands(message);
 
 bot.login(process.env.token);
 
