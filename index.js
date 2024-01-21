@@ -1,4 +1,4 @@
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('discord.js');
 const keepAliveServer = require('./keep_alive.js');
 
 const bot = new Client({
@@ -34,25 +34,36 @@ bot.on('messageCreate', (message) => {
 
     // !botinfo command
     if (message.content.toLowerCase() === '!botinfo') {
-        const botInfo = `Bot Tag: ${bot.user.tag}\nBot ID: ${bot.user.id}`;
-        message.reply(botInfo);
+        const botInfoEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle('Bot Information')
+            .addField('Bot Tag', bot.user.tag, true)
+            .addField('Bot ID', bot.user.id, true);
+
+        message.reply({ embeds: [botInfoEmbed] });
     }
 
     // !userinfo command
     if (message.content.toLowerCase() === '!userinfo') {
-        const userInfo = `Your Tag: ${message.author.tag}\nYour ID: ${message.author.id}`;
-        message.reply(userInfo);
+        const userInfoEmbed = new MessageEmbed()
+            .setColor('#2ecc71')
+            .setTitle('User Information')
+            .addField('Your Tag', message.author.tag, true)
+            .addField('Your ID', message.author.id, true);
+
+        message.reply({ embeds: [userInfoEmbed] });
+        return; // Do not send additional messages
     }
 
     // !serverinfo command
     if (message.content.toLowerCase() === '!serverinfo') {
-        const serverInfo = `Server Name: ${message.guild.name}\nServer ID: ${message.guild.id}`;
-        message.reply(serverInfo);
-    }
+        const serverInfoEmbed = new MessageEmbed()
+            .setColor('#e74c3c')
+            .setTitle('Server Information')
+            .addField('Server Name', message.guild.name, true)
+            .addField('Server ID', message.guild.id, true);
 
-    // Greeting
-    if (message.content.toLowerCase().includes('hey bot') || message.content.toLowerCase().includes('solixblox')) {
-        message.channel.send('Hello there!');
+        message.reply({ embeds: [serverInfoEmbed] });
     }
 });
 
@@ -62,3 +73,13 @@ bot.on('ready', () => {
 });
 
 bot.login(process.env.token);
+
+// Function to format uptime in a human-readable way
+function formatUptime(uptime) {
+    const seconds = Math.floor(uptime / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    return `${days}d ${hours % 24}h ${minutes % 60}m ${seconds % 60}s`;
+}
