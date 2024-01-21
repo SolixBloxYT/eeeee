@@ -291,6 +291,18 @@ if (command === 'invite') {
     await bot.process_commands(message);
 }
 
+// Example command to change bot's status
+    if (message.content.toLowerCase() === ';setstatus') {
+        // Assuming the desired status is 'Watching Hello World!'
+        setBotStatus('WATCHING', 'Hello World!');
+        message.reply('Bot status updated!');
+    }
+});
+
+function setBotStatus(type = 'PLAYING', status = 'Hello World!') {
+    bot.user.setActivity(status, { type: type });
+}
+
 bot.login(process.env.token);
 
 // Function to format uptime in a human-readable way
