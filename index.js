@@ -51,40 +51,40 @@ bot.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
 
     // Respond to mentions of the bot
-    if (message.mentions.has(bot.user)) {
+    if (interaction.mentions.has(bot.user)) {
         const mentionEmbed = new MessageEmbed()
             .setColor('#3498db')
             .setTitle('Mention Information')
-            .setDescription(`Hey ${message.author.username}! Why did you ping me? Do ;ping & ;uptime to try me out!`);
+            .setDescription(`Hey ${interaction.user.username}! Why did you ping me? Do ;ping & ;uptime to try me out!`);
 
-        message.reply({ embeds: [mentionEmbed] });
+        interaction.reply({ embeds: [mentionEmbed] });
         return;
     }
 
     // Parse the custom prefix or use the default prefix
-    const prefix = serverPrefixes.get(message.guild.id) || defaultPrefix;
+    const prefix = serverPrefixes.get(interaction.guild.id) || defaultPrefix;
 
     // Check if the message starts with the bot's prefix
-    if (!message.content.startsWith(prefix)) return;
+    if (!interaction.content.startsWith(prefix)) return;
 
     // Extract the command and arguments
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const args = interaction.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
 
     // ;ping command
     if (command === 'ping') {
         const apiLatency = Math.round(bot.ws.ping);
-        const botLatency = Date.now() - message.createdTimestamp;
+        const botLatency = Date.now() - interaction.createdTimestamp;
 
         const pingEmbed = new MessageEmbed()
             .setColor('#3498db')
             .setTitle('Ping Information')
             .addField('API Latency', `${apiLatency}ms`, true)
-            .addField('Bot Latency', `${botLatency}ms`, true)
+            .addField('Bot Latency', `${botLatency}ms`, true);
 
-        message.reply({ embeds: [pingEmbed] });
+        interaction.reply({ embeds: [pingEmbed] });
     }
-
+    
     // ;uptime command
     if (command === 'uptime') {
         const uptime = Date.now() - startTime;
