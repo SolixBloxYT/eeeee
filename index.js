@@ -266,15 +266,25 @@ if (command === 'banner') {
 
 
 // ;servers command
-if (command === 'servers') {
-    const serversEmbed = new MessageEmbed()
-        .setColor('#3498db')
-        .setTitle('Server Count')
-        .setDescription(`I am in ${bot.guilds.cache.size} servers.`);
+bot.on('messageCreate', (message) => {
+    const prefix = ';'; // Your bot command prefix
+    if (message.author.bot || !message.content.startsWith(prefix)) {
+        return;
+    }
 
-    message.reply({ embeds: [serversEmbed] });
-}
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
 
+    if (command === 'servers') {
+        const serversEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle('Server Count')
+            .setDescription(`I am in ${bot.guilds.cache.size} servers.`);
+
+        message.reply({ embeds: [serversEmbed] });
+    }
+});
+    
 bot.login(process.env.token);
 
 // Function to format uptime in a human-readable way
