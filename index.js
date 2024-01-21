@@ -24,32 +24,43 @@ bot.on('guildMemberAdd', (member) => {
 bot.on('messageCreate', async (message) => {
     if (message.author.bot) return; // Ignore messages from other bots
 
+    // Respond to mentions of the bot
+    if (message.mentions.has(bot.user)) {
+        const mentionEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle('Hey, I'm Testing Bot!')
+            .setDescription(`Hey ${message.author.username}! Why did you ping me? Do ;ping & ;uptime to try me out!`);
+
+        message.reply({ embeds: [mentionEmbed] });
+        return;
+    }
+
     // ;ping command
-if (message.content.toLowerCase() === ';ping') {
-    const apiLatency = Math.round(bot.ws.ping);
-    const botLatency = Date.now() - message.createdTimestamp;
+    if (message.content.toLowerCase() === ';ping') {
+        const apiLatency = Math.round(bot.ws.ping);
+        const botLatency = Date.now() - message.createdTimestamp;
 
-    const pingEmbed = new MessageEmbed()
-        .setColor('#3498db')
-        .setTitle('Ping Information')
-        .addField('API Latency', `${apiLatency}ms`, true)
-        .addField('Bot Latency', `${botLatency}ms`, true);
+        const pingEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle('Ping Information')
+            .addField('API Latency', `${apiLatency}ms`, true)
+            .addField('Bot Latency', `${botLatency}ms`, true)
 
-    message.reply({ embeds: [pingEmbed] });
-}
+        message.reply({ embeds: [pingEmbed] });
+    }
 
     // ;uptime command
-if (message.content.toLowerCase() === ';uptime') {
-    const uptime = Date.now() - startTime;
-    const formattedUptime = formatUptime(uptime);
+    if (message.content.toLowerCase() === ';uptime') {
+        const uptime = Date.now() - startTime;
+        const formattedUptime = formatUptime(uptime);
 
-    const uptimeEmbed = new MessageEmbed()
-        .setColor('#3498db')
-        .setTitle('Uptime Information')
-        .addField('Bot Uptime', formattedUptime);
+        const uptimeEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle('Uptime Information')
+            .addField('Bot Uptime', formattedUptime)
 
-    message.reply({ embeds: [uptimeEmbed] });
-}
+        message.reply({ embeds: [uptimeEmbed] });
+    }
 
     // ;botinfo command
     if (message.content.toLowerCase() === ';botinfo') {
