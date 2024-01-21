@@ -5,6 +5,11 @@ const bot = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES]
 });
 
+const defaultPrefix = ';'; // Default prefix
+
+// A map to store custom prefixes for each server
+const serverPrefixes = new Map();
+
 const startTime = Date.now(); // Store the bot's start time
 
 // Simulate a simple economy system (for demonstration purposes)
@@ -28,15 +33,25 @@ bot.on('messageCreate', async (message) => {
     if (message.mentions.has(bot.user)) {
         const mentionEmbed = new MessageEmbed()
             .setColor('#3498db')
-            .setTitle('Hey, I'm Testing Bot!')
+            .setTitle('Mention Information')
             .setDescription(`Hey ${message.author.username}! Why did you ping me? Do ;ping & ;uptime to try me out!`);
 
         message.reply({ embeds: [mentionEmbed] });
         return;
     }
 
+    // Parse the custom prefix or use the default prefix
+    const prefix = serverPrefixes.get(message.guild.id) || defaultPrefix;
+    
+    // Check if the message starts with the bot's prefix
+    if (!message.content.startsWith(prefix)) return;
+
+    // Extract the command and arguments
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
+
     // ;ping command
-    if (message.content.toLowerCase() === ';ping') {
+    if (command === 'ping') {
         const apiLatency = Math.round(bot.ws.ping);
         const botLatency = Date.now() - message.createdTimestamp;
 
@@ -50,7 +65,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;uptime command
-    if (message.content.toLowerCase() === ';uptime') {
+    if (command === 'uptime') {
         const uptime = Date.now() - startTime;
         const formattedUptime = formatUptime(uptime);
 
@@ -63,7 +78,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;botinfo command
-    if (message.content.toLowerCase() === ';botinfo') {
+    if (command === 'botinfo') {
         const botInfoEmbed = new MessageEmbed()
             .setColor('#3498db')
             .setTitle('Bot Information')
@@ -74,7 +89,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;userinfo command
-    if (message.content.toLowerCase().startsWith(';userinfo')) {
+    if (command === 'userinfo') {
         const targetUser = message.mentions.users.first() || message.author;
 
         const userInfoEmbed = new MessageEmbed()
@@ -88,7 +103,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;serverinfo command
-    if (message.content.toLowerCase() === ';serverinfo') {
+    if (command === 'serverinfo') {
         const serverInfoEmbed = new MessageEmbed()
             .setColor('#e74c3c')
             .setTitle('Server Information')
@@ -99,7 +114,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;avatar command
-    if (message.content.toLowerCase().startsWith(';avatar')) {
+    if (command === 'avatar') {
         const targetUser = message.mentions.users.first() || message.author;
         const avatarEmbed = new MessageEmbed()
             .setColor('#3498db')
@@ -110,7 +125,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;balance command
-    if (message.content.toLowerCase() === ';balance') {
+    if (command === 'balance') {
         const userBalance = userBalances.get(message.author.id) || 0;
 
         const balanceEmbed = new MessageEmbed()
@@ -122,7 +137,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;work command
-    if (message.content.toLowerCase() === ';work') {
+    if (command === 'work') {
         const earnings = Math.floor(Math.random() * 200) + 1; // Random earnings between 1 and 200 coins
 
         // Update user balance
@@ -138,7 +153,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;rob command
-    if (message.content.toLowerCase().startsWith(';rob')) {
+    if (command === 'rob') {
         const targetUser = message.mentions.users.first();
 
         if (!targetUser) {
@@ -170,6 +185,27 @@ bot.on('messageCreate', async (message) => {
 
             message.reply({ embeds: [robEmbed] });
         }
+    }
+
+    // ;prefix command
+    if (command === 'prefix') {
+        // Check if the user has permission to change the prefix (e.g., server admin)
+        if (!message.member.permissions.has('ADMINISTRATOR')) {
+            message.reply('You do not have permission to change the prefix.');
+            return;
+        }
+
+        const newPrefix = args[0];
+
+        // Check if a new prefix is provided
+        if (!newPrefix) {
+            message.reply(`The current prefix is \`${prefix}\`. To change it, use \`${prefix}prefix <new-prefix>\`.`);
+            return;
+        }
+
+        // Update the server's custom prefix
+        serverPrefixes.set(message.guild.id, newPrefix);
+        message.reply(`Prefix updated to \`${newPrefix}\`.`);
     }
 });
 
