@@ -84,29 +84,30 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;botinfo command
-    if (command === 'botinfo') {
-        // Get CPU and memory usage
-        const { heapUsed, heapTotal } = process.memoryUsage();
-        const cpuUsage = process.cpuUsage();
+if (command === 'botinfo') {
+    // Get CPU and memory usage
+    const { heapUsed, heapTotal } = process.memoryUsage();
+    const cpuUsage = process.cpuUsage();
 
-        // Calculate the CPU usage percentage
-        const cpuUsagePercentage = ((cpuUsage.user + cpuUsage.system) / 1000000) * 100;
+    // Calculate the CPU usage percentage
+    const cpuUsagePercentage = ((cpuUsage.user + cpuUsage.system) / 1000000) * 100;
 
-        // Replace 'numberOfCommands' with the actual count of your commands
-        const numberOfCommands = getNumberOfCommands(); // Replace with your function or variable
+    // Replace 'getNumberOfCommands' with the actual count of your commands
+    const numberOfCommands = getNumberOfCommands(); // Replace with your function or variable
 
-        const botInfoEmbed = new MessageEmbed()
-            .setColor('#3498db')
-            .setTitle('Bot Information')
-            .addField('Ping', `${bot.ws.ping}ms`, true)
-            .addField('CPU', `${cpuUsagePercentage.toFixed(2)}%`, true)
-            .addField('Memory', `${(heapUsed / 1024 / 1024).toFixed(2)}MB / ${(heapTotal / 1024 / 1024).toFixed(2)}MB`, true)
-            .addField('Commands', numberOfCommands.toString(), true)
-            .addField('Guilds', bot.guilds.cache.size, true)
-            .addField('Users', bot.users.cache.size, true);
+    const botInfoEmbed = new MessageEmbed()
+        .setColor('#3498db')
+        .setTitle('Bot Information')
+        .addField('Ping', `${bot.ws.ping}ms`, true)
+        .addField('CPU', `${cpuUsagePercentage.toFixed(2)}%`, true)
+        .addField('Memory', `${(heapUsed / 1024 / 1024).toFixed(2)}MB / ${(heapTotal / 1024 / 1024).toFixed(2)}MB`, true)
+        .addField('Commands', bot.numberOfCommands.toString(), true)
+        .addField('Guilds', bot.guilds.cache.size, true)
+        .addField('Users', bot.users.cache.size, true);
 
-        message.reply({ embeds: [botInfoEmbed] });
-    }
+    message.reply({ embeds: [botInfoEmbed] });
+}
+
 
     // ;userinfo command
     if (command === 'userinfo') {
