@@ -249,12 +249,12 @@ if (command === 'banner') {
     const targetUser = message.mentions.users.first() || message.author;
 
     // Check if the user has a banner
-    const bannerURLPNG = targetUser.bannerURL({ size: 4096, format: 'png', dynamic: true });
-    const bannerURLJPEG = targetUser.bannerURL({ size: 4096, format: 'jpeg', dynamic: true });
-    const bannerURLWEBP = targetUser.bannerURL({ size: 4096, format: 'webp', dynamic: true });
-
-    // Check and use the available format
-    const bannerURL = bannerURLPNG || bannerURLJPEG || bannerURLWEBP;
+    const bannerURL = targetUser.displayAvatarURL({
+        size: 4096,
+        format: 'png', // or 'jpeg' or 'webp'
+        dynamic: true,
+        banner: true,  // This is the key change, specifying banner: true
+    });
 
     if (bannerURL) {
         // Your code to use the banner URL goes here
