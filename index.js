@@ -171,6 +171,7 @@ if (command === 'balance') {
         message.reply({ embeds: [targetBalanceEmbed] });
     }
 }
+    
     // ;work command
     if (command === 'work') {
         const earnings = Math.floor(Math.random() * 200) + 1; // Random earnings between 1 and 200 coins
