@@ -118,16 +118,17 @@ if (command === 'botinfo') {
 }
 
     // ;serverinfo command
-    elif command == 'serverinfo':
-        server_info_embed = MessageEmbed(
-            color=0xe74c3c,
-            title='Server Information',
-            fields=[
-                ('Server Name', message.guild.name, True),
-                ('Server ID', message.guild.id, True)
-            ]
-        )
-        await message.reply(embed=server_info_embed)
+    if (command === 'serverinfo') {
+    const server_info_embed = new MessageEmbed()
+        .setColor(0xe74c3c)
+        .setTitle('Server Information')
+        .addFields(
+            { name: 'Server Name', value: message.guild.name, inline: true },
+            { name: 'Server ID', value: message.guild.id, inline: true }
+        );
+
+    await message.reply({ embeds: [server_info_embed] });
+}
     // ;avatar command
     if (command === 'avatar') {
         const targetUser = message.mentions.users.first() || message.author;
