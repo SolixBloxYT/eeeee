@@ -84,38 +84,38 @@ bot.on('messageCreate', async (message) => {
     }
 
         // ;botinfo command
-    elif command == 'botinfo':
-        # Get CPU and memory usage
-        .cpu_usage = psutil.cpu_percent()
-        .memory_usage = psutil.virtual_memory()
+if (command === 'botinfo') {
+    const { heapUsed, heapTotal } = process.memoryUsage();
+    const cpuUsage = process.cpuUsage();
 
-        bot_info_embed = MessageEmbed(
-            .color=0x3498db,
-            .title='Bot Information',
-            .fields=[
-                ('Ping', f'{bot.latency * 1000:.2f}ms', True),
-                ('CPU Usage', f'{cpu_usage:.2f}%', True),
-                ('Memory Usage', f'{memory_usage.percent:.2f}%', True),
-                ('Commands', str(len(bot.commands)), True),
-                ('Guilds', len(bot.guilds), True),
-                ('Users', len(bot.users), True)
-            ]
-        )
-        await message.reply(embed=bot_info_embed)
+    const cpuUsagePercentage = ((cpuUsage.user + cpuUsage.system) / 1000000) * 100;
+
+    const botInfoEmbed = new MessageEmbed()
+        .setColor('#3498db')
+        .setTitle('Bot Information')
+        .addField('Ping', `${bot.ws.ping}ms`, true)
+        .addField('CPU', `${cpuUsagePercentage.toFixed(2)}%`, true)
+        .addField('Memory', `${(heapUsed / 1024 / 1024).toFixed(2)}MB / ${(heapTotal / 1024 / 1024).toFixed(2)}MB`, true)
+        .addField('Commands', getNumberOfCommands(), true)
+        .addField('Guilds', bot.guilds.cache.size, true)
+        .addField('Users', bot.users.cache.size, true);
+
+    message.reply({ embeds: [botInfoEmbed] });
+}
 
     // ;userinfo command
-    elif command == 'userinfo':
-        target_user = message.mentions[0] if message.mentions else message.author
+    if (command === 'userinfo') {
+    const targetUser = message.mentions.users.first() || message.author;
 
-        user_info_embed = MessageEmbed(
-            color=0x2ecc71,
-            title='User Information',
-            fields=[
-                ('User Tag', target_user.name, True),
-                ('User ID', target_user.id, True)
-            ]
-        )
-        await message.reply(embed=user_info_embed)
+    const userInfoEmbed = new MessageEmbed()
+        .setColor('#2ecc71')
+        .setTitle('User Information')
+        .addField('User Tag', targetUser.tag, true)
+        .addField('User ID', targetUser.id, true);
+
+    message.reply({ embeds: [userInfoEmbed] });
+    return;
+}
 
     // ;serverinfo command
     elif command == 'serverinfo':
@@ -240,14 +240,26 @@ if (command === 'balance') {
     }
 
    // ;banner command
-    elif command == 'banner':
-        target_user = message.mentions[0] if message.mentions else message.author
-        banner_url = target_user.banner_url_as(format='png', size=4096)
+    if (command === 'banner') {
+    const targetUser = message.mentions.users.first() || message.author;
 
-        if banner_url:
-            await message.reply(f'Here is the banner for {target_user.name}: {banner_url}')
-        else:
-            await message.reply(f'{target_user.name} does not have a banner.')
+    const bannerURL = targetUser.bannerURL({
+        size: 4096,
+        format: 'png',
+        dynamic: true,
+    });
+
+    if (bannerURL) {
+        const bannerEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle(`${targetUser.tag}'s Banner`)
+            .setImage(bannerURL);
+
+        message.reply({ embeds: [bannerEmbed] });
+    } else {
+        message.reply(`${targetUser.tag} does not have a banner.`);
+    }
+}
 
 
     // ;servers command
