@@ -146,15 +146,31 @@ bot.on('messageCreate', async (message) => {
 
     // ;balance command
     if (command === 'balance') {
-        const userBalance = userBalances.get(message.author.id) || 0;
+        // Check if a user is mentioned
+        const targetUser = message.mentions.users.first();
 
-        const balanceEmbed = new MessageEmbed()
-            .setColor('#f39c12')
-            .setTitle('Wallet Balance')
-            .setDescription(`Your current balance is ${userBalance} coins.`);
+        if (!targetUser) {
+            // If no user mentioned, show balance of the message author
+            const userBalance = userBalances.get(message.author.id) || 0;
 
-        message.reply({ embeds: [balanceEmbed] });
-    }
+            const balanceEmbed = new MessageEmbed()
+                .setColor('#f39c12')
+                .setTitle('Wallet Balance')
+                .setDescription(`Your current balance is ${userBalance} coins.`);
+
+            message.reply({ embeds: [balanceEmbed] });
+        } else {
+            // If user mentioned, show balance of the mentioned user
+            const targetBalance = userBalances.get(targetUser.id) || 0;
+
+            const targetBalanceEmbed = new MessageEmbed()
+                .setColor('#f39c12')
+                .setTitle(`${targetUser.tag}'s Wallet Balance`)
+                .setDescription(`${targetUser.tag}'s current balance is ${targetBalance} coins.`);
+
+            message.reply({ embeds: [targetBalanceEmbed] });
+        }
+    
 
     // ;work command
     if (command === 'work') {
