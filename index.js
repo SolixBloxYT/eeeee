@@ -278,17 +278,19 @@ if (command === 'balance') {
 const clientId = '1148609650334371852';
 
 // ;invite command
-    elif command == 'invite':
-        invite_link = f'https://discord.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=YOUR_PERMISSIONS'
-        invite_embed = MessageEmbed(
-            color=0x3498db,
-            title='Invite the Bot',
-            description=f'You can invite the bot to your server using the following link:\n[{invite_link}]({invite_link})'
-        )
-        await message.reply(embed=invite_embed)
+if (command === 'invite') {
+    const invite_link = `https://discord.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=YOUR_PERMISSIONS`;
 
-    await bot.process_commands(message)
-    
+    const invite_embed = new MessageEmbed()
+        .setColor(0x3498db)
+        .setTitle('Invite the Bot')
+        .setDescription(`You can invite the bot to your server using the following link:\n[${invite_link}](${invite_link})`);
+
+    await message.reply({ embeds: [invite_embed] });
+}
+
+await bot.process_commands(message);
+
 bot.login(process.env.token);
 
 // Function to format uptime in a human-readable way
