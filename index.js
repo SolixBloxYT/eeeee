@@ -244,7 +244,7 @@ if (command === 'balance') {
         message.reply(`Prefix updated to \`${newPrefix}\`.`);
     }
 
-    / ;banner command
+    // ;banner command
 if (command === 'banner') {
     const targetUser = message.mentions.users.first() || message.author;
 
