@@ -244,7 +244,7 @@ if (command === 'balance') {
         message.reply(`Prefix updated to \`${newPrefix}\`.`);
     }
 
-    // ;banner command
+   // ;banner command
 if (command === 'banner') {
     const targetUser = message.mentions.users.first() || message.author;
 
@@ -253,7 +253,6 @@ if (command === 'banner') {
         size: 4096,
         format: 'png', // or 'jpeg' or 'webp'
         dynamic: true,
-        banner: true,  // This is the key change, specifying banner: true
     });
 
     if (bannerURL) {
@@ -264,6 +263,7 @@ if (command === 'banner') {
         message.reply(`${targetUser.tag} does not have a banner.`);
     }
 }
+
 
 // ;servers command
 if (command === 'servers') {
