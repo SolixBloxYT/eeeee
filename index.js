@@ -1,4 +1,4 @@
-    const { Client, Intents, MessageEmbed } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('discord.js');
 const keepAliveServer = require('./keep_alive.js');
 
 const bot = new Client({
