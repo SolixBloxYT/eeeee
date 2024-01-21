@@ -86,13 +86,13 @@ bot.on('messageCreate', async (message) => {
         // ;botinfo command
     elif command == 'botinfo':
         # Get CPU and memory usage
-        cpu_usage = psutil.cpu_percent()
-        memory_usage = psutil.virtual_memory()
+        .cpu_usage = psutil.cpu_percent()
+        .memory_usage = psutil.virtual_memory()
 
         bot_info_embed = MessageEmbed(
-            color=0x3498db,
-            title='Bot Information',
-            fields=[
+            .color=0x3498db,
+            .title='Bot Information',
+            .fields=[
                 ('Ping', f'{bot.latency * 1000:.2f}ms', True),
                 ('CPU Usage', f'{cpu_usage:.2f}%', True),
                 ('Memory Usage', f'{memory_usage.percent:.2f}%', True),
