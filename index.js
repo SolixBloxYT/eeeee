@@ -11,7 +11,7 @@ const bot = new Client({
 const startTime = Date.now(); // Store the bot's start time
 
 bot.on('guildMemberAdd', (member) => {
-    const channelId = '1197950988057845910'; // The Channel ID you just copied
+    const channelId = '1196738471843340320'; // The Channel ID you just copied
     const welcomeMessage = `Hey <@${member.id}>! Welcome to my server!`;
     member.guild.channels.fetch(channelId).then(channel => {
         channel.send(welcomeMessage)
