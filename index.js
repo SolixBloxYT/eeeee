@@ -294,7 +294,7 @@ const clientId = '1148609650334371852';
 
 // ;invite command
 if (command === 'invite') {
-    const invite_link = `https://discord.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=YOUR_PERMISSIONS`;
+    const invite_link = `https://discord.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8&scope=bot`;
 
     const invite_embed = new MessageEmbed()
         .setColor(0x3498db)
