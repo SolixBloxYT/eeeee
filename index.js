@@ -244,30 +244,26 @@ if (command === 'balance') {
         message.reply(`Prefix updated to \`${newPrefix}\`.`);
     }
 
-    // ;banner command
-    if (command === 'banner') {
-        const targetUser = message.mentions.users.first() || message.author;
+    / ;banner command
+if (command === 'banner') {
+    const targetUser = message.mentions.users.first() || message.author;
 
-        // Check if the user has a banner
-        const bannerURLPNG = targetUser.bannerURL({ size: 4096, format: 'png', dynamic: true });
-        const bannerURLJPEG = targetUser.bannerURL({ size: 4096, format: 'jpeg', dynamic: true });
-        const bannerURLWEBP = targetUser.bannerURL({ size: 4096, format: 'webp', dynamic: true });
+    // Check if the user has a banner
+    const bannerURLPNG = targetUser.bannerURL({ size: 4096, format: 'png', dynamic: true });
+    const bannerURLJPEG = targetUser.bannerURL({ size: 4096, format: 'jpeg', dynamic: true });
+    const bannerURLWEBP = targetUser.bannerURL({ size: 4096, format: 'webp', dynamic: true });
 
-        if (!bannerURLPNG && !bannerURLJPEG && !bannerURLWEBP) {
-            message.reply(`${targetUser.tag} does not have a banner.`);
-            return;
-        }
+    // Check and use the available format
+    const bannerURL = bannerURLPNG || bannerURLJPEG || bannerURLWEBP;
 
-        const bannerEmbed = new MessageEmbed()
-            .setColor('#3498db')
-            .setTitle(`${targetUser.tag}'s Banner`)
-            .addField('PNG', bannerURLPNG ? `[Link](${bannerURLPNG})` : 'Not available', true)
-            .addField('JPEG', bannerURLJPEG ? `[Link](${bannerURLJPEG})` : 'Not available', true)
-            .addField('WEBP', bannerURLWEBP ? `[Link](${bannerURLWEBP})` : 'Not available', true);
-
-        message.reply({ embeds: [bannerEmbed] });
+    if (bannerURL) {
+        // Your code to use the banner URL goes here
+        // For example, you can send it in a message or embed
+        message.reply(`Here is the banner for ${targetUser.tag}: ${bannerURL}`);
+    } else {
+        message.reply(`${targetUser.tag} does not have a banner.`);
     }
-});
+}
 
 // ;servers command
 if (command === 'servers') {
