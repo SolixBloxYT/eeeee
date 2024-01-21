@@ -251,13 +251,14 @@ if (command === 'balance') {
 
 
     // ;servers command
-    elif command == 'servers':
-        servers_embed = MessageEmbed(
-            color=0x3498db,
-            title='Server Count',
-            description=f'I am in {len(bot.guilds)} servers.'
-        )
-        await message.reply(embed=servers_embed)
+    if (command === 'servers') {
+    const serversEmbed = new MessageEmbed()
+        .setColor('#3498db')
+        .setTitle('Server Count')
+        .setDescription(`I am in ${bot.guilds.cache.size} servers.`);
+
+    message.reply({ embeds: [serversEmbed] });
+}
 
 
 // Replace 'YOUR_CLIENT_ID' with your bot's client ID
