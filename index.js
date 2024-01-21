@@ -270,15 +270,15 @@ if (command === 'balance') {
 });
 
 // ;servers command
-    if (command === 'servers') {
-        const serversEmbed = new MessageEmbed()
-            .setColor('#3498db')
-            .setTitle('Server Count')
-            .setDescription(`I am in ${bot.guilds.cache.size} servers.`);
+if (command === 'servers') {
+    const serversEmbed = new MessageEmbed()
+        .setColor('#3498db')
+        .setTitle('Server Count')
+        .setDescription(`I am in ${bot.guilds.cache.size} servers.`);
 
-        message.reply({ embeds: [serversEmbed] });
-    }
-});
+    message.reply({ embeds: [serversEmbed] });
+}
+
 
 bot.on('ready', () => {
     console.log(`Bot ${bot.user.tag} is logged in!`);
