@@ -25,18 +25,31 @@ bot.on('messageCreate', async (message) => {
     if (message.author.bot) return; // Ignore messages from other bots
 
     // !ping command
-    if (message.content.toLowerCase() === ';ping') {
-        const apiLatency = Math.round(bot.ws.ping);
-        const botLatency = Date.now() - message.createdTimestamp;
-        message.reply(`Pong! API Latency: ${apiLatency}ms, Bot Latency: ${botLatency}ms`);
-    }
+if (message.content.toLowerCase() === '!ping') {
+    const apiLatency = Math.round(bot.ws.ping);
+    const botLatency = Date.now() - message.createdTimestamp;
+
+    const pingEmbed = new MessageEmbed()
+        .setColor('#3498db')
+        .setTitle('Ping Information')
+        .addField('API Latency', `${apiLatency}ms`, true)
+        .addField('Bot Latency', `${botLatency}ms`, true);
+
+    message.reply({ embeds: [pingEmbed] });
+}
 
     // !uptime command
-    if (message.content.toLowerCase() === ';uptime') {
-        const uptime = Date.now() - startTime;
-        const formattedUptime = formatUptime(uptime);
-        message.reply(`Bot Uptime: ${formattedUptime}`);
-    }
+if (message.content.toLowerCase() === '!uptime') {
+    const uptime = Date.now() - startTime;
+    const formattedUptime = formatUptime(uptime);
+
+    const uptimeEmbed = new MessageEmbed()
+        .setColor('#3498db')
+        .setTitle('Uptime Information')
+        .addField('Bot Uptime', formattedUptime);
+
+    message.reply({ embeds: [uptimeEmbed] });
+}
 
     // !botinfo command
     if (message.content.toLowerCase() === ';botinfo') {
