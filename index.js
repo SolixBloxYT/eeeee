@@ -7,12 +7,18 @@ const bot = new Client({
 
 const startTime = Date.now(); // Store the bot's start time
 
+// Simulate a simple economy system (for demonstration purposes)
+const userBalances = new Map();
+
 bot.on('guildMemberAdd', (member) => {
     const channelId = '1196738471843340320'; // The Channel ID you just copied
     const welcomeMessage = `Hey <@${member.id}>! Welcome to my server!`;
     member.guild.channels.fetch(channelId).then(channel => {
         channel.send(welcomeMessage);
     });
+
+    // Initialize balance for the new member
+    userBalances.set(member.id, 1000);
 });
 
 bot.on('messageCreate', async (message) => {
@@ -77,6 +83,69 @@ bot.on('messageCreate', async (message) => {
             .setImage(targetUser.displayAvatarURL({ dynamic: true, size: 4096 }));
 
         message.reply({ embeds: [avatarEmbed] });
+    }
+
+    // !balance command
+    if (message.content.toLowerCase() === '!balance') {
+        const userBalance = userBalances.get(message.author.id) || 0;
+
+        const balanceEmbed = new MessageEmbed()
+            .setColor('#f39c12')
+            .setTitle('Wallet Balance')
+            .setDescription(`Your current balance is ${userBalance} coins.`);
+
+        message.reply({ embeds: [balanceEmbed] });
+    }
+
+    // !work command
+    if (message.content.toLowerCase() === '!work') {
+        const earnings = Math.floor(Math.random() * 200) + 1; // Random earnings between 1 and 200 coins
+
+        // Update user balance
+        const userBalance = (userBalances.get(message.author.id) || 0) + earnings;
+        userBalances.set(message.author.id, userBalance);
+
+        const workEmbed = new MessageEmbed()
+            .setColor('#27ae60')
+            .setTitle('Work Complete!')
+            .setDescription(`You earned ${earnings} coins for your hard work. Your new balance is ${userBalance} coins.`);
+
+        message.reply({ embeds: [workEmbed] });
+    }
+
+    // !rob command
+    if (message.content.toLowerCase().startsWith('!rob')) {
+        const targetUser = message.mentions.users.first();
+
+        if (!targetUser) {
+            message.reply('Please mention a user to rob.');
+            return;
+        }
+
+        // Calculate a chance of success for the robbery
+        const successChance = Math.random();
+
+        if (successChance < 0.5) {
+            // Robbery failed
+            message.reply(`Oops! You tried to rob ${targetUser.tag} but failed. Better luck next time!`);
+        } else {
+            // Robbery successful
+            const stolenAmount = Math.floor(Math.random() * 200) + 1; // Random amount between 1 and 200 coins
+
+            // Update balances for both the robber and the target
+            const robberBalance = (userBalances.get(message.author.id) || 0) + stolenAmount;
+            const targetBalance = (userBalances.get(targetUser.id) || 0) - stolenAmount;
+
+            userBalances.set(message.author.id, robberBalance);
+            userBalances.set(targetUser.id, targetBalance);
+
+            const robEmbed = new MessageEmbed()
+                .setColor('#e74c3c')
+                .setTitle('Robbery Success!')
+                .setDescription(`You successfully robbed ${targetUser.tag} and stole ${stolenAmount} coins. Your new balance is ${robberBalance} coins.`);
+
+            message.reply({ embeds: [robEmbed] });
+        }
     }
 });
 
