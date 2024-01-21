@@ -24,7 +24,7 @@ bot.on('guildMemberAdd', (member) => {
 bot.on('messageCreate', async (message) => {
     if (message.author.bot) return; // Ignore messages from other bots
 
-    // !ping command
+    // ;ping command
 if (message.content.toLowerCase() === ';ping') {
     const apiLatency = Math.round(bot.ws.ping);
     const botLatency = Date.now() - message.createdTimestamp;
@@ -38,7 +38,7 @@ if (message.content.toLowerCase() === ';ping') {
     message.reply({ embeds: [pingEmbed] });
 }
 
-    // !uptime command
+    // ;uptime command
 if (message.content.toLowerCase() === ';uptime') {
     const uptime = Date.now() - startTime;
     const formattedUptime = formatUptime(uptime);
@@ -51,7 +51,7 @@ if (message.content.toLowerCase() === ';uptime') {
     message.reply({ embeds: [uptimeEmbed] });
 }
 
-    // !botinfo command
+    // ;botinfo command
     if (message.content.toLowerCase() === ';botinfo') {
         const botInfoEmbed = new MessageEmbed()
             .setColor('#3498db')
@@ -62,7 +62,7 @@ if (message.content.toLowerCase() === ';uptime') {
         message.reply({ embeds: [botInfoEmbed] });
     }
 
-    // !userinfo command
+    // ;userinfo command
     if (message.content.toLowerCase().startsWith(';userinfo')) {
         const targetUser = message.mentions.users.first() || message.author;
 
@@ -76,7 +76,7 @@ if (message.content.toLowerCase() === ';uptime') {
         return; // Do not send additional messages
     }
 
-    // !serverinfo command
+    // ;serverinfo command
     if (message.content.toLowerCase() === ';serverinfo') {
         const serverInfoEmbed = new MessageEmbed()
             .setColor('#e74c3c')
@@ -87,7 +87,7 @@ if (message.content.toLowerCase() === ';uptime') {
         message.reply({ embeds: [serverInfoEmbed] });
     }
 
-    // !avatar command
+    // ;avatar command
     if (message.content.toLowerCase().startsWith(';avatar')) {
         const targetUser = message.mentions.users.first() || message.author;
         const avatarEmbed = new MessageEmbed()
@@ -98,7 +98,7 @@ if (message.content.toLowerCase() === ';uptime') {
         message.reply({ embeds: [avatarEmbed] });
     }
 
-    // !balance command
+    // ;balance command
     if (message.content.toLowerCase() === ';balance') {
         const userBalance = userBalances.get(message.author.id) || 0;
 
@@ -110,7 +110,7 @@ if (message.content.toLowerCase() === ';uptime') {
         message.reply({ embeds: [balanceEmbed] });
     }
 
-    // !work command
+    // ;work command
     if (message.content.toLowerCase() === ';work') {
         const earnings = Math.floor(Math.random() * 200) + 1; // Random earnings between 1 and 200 coins
 
@@ -126,7 +126,7 @@ if (message.content.toLowerCase() === ';uptime') {
         message.reply({ embeds: [workEmbed] });
     }
 
-    // !rob command
+    // ;rob command
     if (message.content.toLowerCase().startsWith(';rob')) {
         const targetUser = message.mentions.users.first();
 
