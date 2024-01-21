@@ -5,16 +5,14 @@ const bot = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES]
 });
 
-const defaultPrefix = ';'; // Default prefix
-
+const defaultPrefix = ';';
 const serverPrefixes = new Map();
-
 const startTime = Date.now();
-
 const userBalances = new Map();
 
 function getNumberOfCommands() {
-    return yourArrayOfCommands.length;
+    // Replace this with the actual logic to get the count of commands
+    return yourArrayOfCommands.length; // or yourCommandCountVariable
 }
 
 bot.on('guildMemberAdd', (member) => {
