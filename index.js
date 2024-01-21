@@ -285,6 +285,35 @@ bot.on('messageCreate', (message) => {
         message.reply({ embeds: [serversEmbed] });
     }
 });
+
+// Replace 'YOUR_CLIENT_ID' with your bot's client ID
+const clientId = '1148609650334371852';
+
+// ;invite command
+bot.on('messageCreate', (message) => {
+    const prefix = ';';
+
+    if (message.author.bot || !message.content.startsWith(prefix)) {
+        return;
+    }
+
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
+
+    if (command === 'invite') {
+        // Generate the bot invite link
+        const inviteLink = `https://discord.com/oauth2/authorize?client_id=${clientId}&scope=bot&permissions=YOUR_PERMISSIONS`;
+
+        // Create an embed with the invite link
+        const inviteEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle('Invite the Bot')
+            .setDescription(`You can invite the bot to your server using the following link:\n[${inviteLink}](${inviteLink})`);
+
+        // Send the embed as a reply
+        message.reply({ embeds: [inviteEmbed] });
+    }
+});
     
 bot.login(process.env.token);
 
