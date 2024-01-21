@@ -78,15 +78,26 @@ bot.on('messageCreate', async (message) => {
     }
 
     // ;botinfo command
-    if (command === 'botinfo') {
-        const botInfoEmbed = new MessageEmbed()
-            .setColor('#3498db')
-            .setTitle('Bot Information')
-            .addField('Bot Tag', bot.user.tag, true)
-            .addField('Bot ID', bot.user.id, true);
+if (command === 'botinfo') {
+    // Get CPU and memory usage
+    const { heapUsed, heapTotal } = process.memoryUsage();
+    const cpuUsage = process.cpuUsage();
 
-        message.reply({ embeds: [botInfoEmbed] });
-    }
+    // Calculate the CPU usage percentage
+    const cpuUsagePercentage = ((cpuUsage.user + cpuUsage.system) / 1000000) * 100;
+
+    const botInfoEmbed = new MessageEmbed()
+        .setColor('#3498db')
+        .setTitle('Bot Information')
+        .addField('Ping', `${bot.ws.ping}ms`, true)
+        .addField('CPU', `${cpuUsagePercentage.toFixed(2)}%`, true)
+        .addField('Memory', `${(heapUsed / 1024 / 1024).toFixed(2)}MB / ${(heapTotal / 1024 / 1024).toFixed(2)}MB`, true)
+        .addField('Commands', 'Number of commands', true) // Replace with the actual count of your commands
+        .addField('Guilds', bot.guilds.cache.size, true)
+        .addField('Users', bot.users.cache.size, true);
+
+    message.reply({ embeds: [botInfoEmbed] });
+}
 
     // ;userinfo command
     if (command === 'userinfo') {
