@@ -15,7 +15,7 @@ bot.on('guildMemberAdd', (member) => {
     });
 });
 
-bot.on('messageCreate', (message) => {
+bot.on('messageCreate', async (message) => {
     if (message.author.bot) return; // Ignore messages from other bots
 
     // !ping command
@@ -66,6 +66,17 @@ bot.on('messageCreate', (message) => {
             .addField('Server ID', message.guild.id, true);
 
         message.reply({ embeds: [serverInfoEmbed] });
+    }
+
+    // !avatar command
+    if (message.content.toLowerCase().startsWith('!avatar')) {
+        const targetUser = message.mentions.users.first() || message.author;
+        const avatarEmbed = new MessageEmbed()
+            .setColor('#3498db')
+            .setTitle(`${targetUser.tag}'s Avatar`)
+            .setImage(targetUser.displayAvatarURL({ dynamic: true, size: 4096 }));
+
+        message.reply({ embeds: [avatarEmbed] });
     }
 });
 
