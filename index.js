@@ -25,21 +25,21 @@ bot.on('messageCreate', async (message) => {
     if (message.author.bot) return; // Ignore messages from other bots
 
     // !ping command
-    if (message.content.toLowerCase() === '!ping') {
+    if (message.content.toLowerCase() === ';ping') {
         const apiLatency = Math.round(bot.ws.ping);
         const botLatency = Date.now() - message.createdTimestamp;
         message.reply(`Pong! API Latency: ${apiLatency}ms, Bot Latency: ${botLatency}ms`);
     }
 
     // !uptime command
-    if (message.content.toLowerCase() === '!uptime') {
+    if (message.content.toLowerCase() === ';uptime') {
         const uptime = Date.now() - startTime;
         const formattedUptime = formatUptime(uptime);
         message.reply(`Bot Uptime: ${formattedUptime}`);
     }
 
     // !botinfo command
-    if (message.content.toLowerCase() === '!botinfo') {
+    if (message.content.toLowerCase() === ';botinfo') {
         const botInfoEmbed = new MessageEmbed()
             .setColor('#3498db')
             .setTitle('Bot Information')
@@ -50,7 +50,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // !userinfo command
-    if (message.content.toLowerCase().startsWith('!userinfo')) {
+    if (message.content.toLowerCase().startsWith(';userinfo')) {
         const targetUser = message.mentions.users.first() || message.author;
 
         const userInfoEmbed = new MessageEmbed()
@@ -64,7 +64,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // !serverinfo command
-    if (message.content.toLowerCase() === '!serverinfo') {
+    if (message.content.toLowerCase() === ';serverinfo') {
         const serverInfoEmbed = new MessageEmbed()
             .setColor('#e74c3c')
             .setTitle('Server Information')
@@ -75,7 +75,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // !avatar command
-    if (message.content.toLowerCase().startsWith('!avatar')) {
+    if (message.content.toLowerCase().startsWith(';avatar')) {
         const targetUser = message.mentions.users.first() || message.author;
         const avatarEmbed = new MessageEmbed()
             .setColor('#3498db')
@@ -86,7 +86,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // !balance command
-    if (message.content.toLowerCase() === '!balance') {
+    if (message.content.toLowerCase() === ';balance') {
         const userBalance = userBalances.get(message.author.id) || 0;
 
         const balanceEmbed = new MessageEmbed()
@@ -98,7 +98,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // !work command
-    if (message.content.toLowerCase() === '!work') {
+    if (message.content.toLowerCase() === ';work') {
         const earnings = Math.floor(Math.random() * 200) + 1; // Random earnings between 1 and 200 coins
 
         // Update user balance
@@ -114,7 +114,7 @@ bot.on('messageCreate', async (message) => {
     }
 
     // !rob command
-    if (message.content.toLowerCase().startsWith('!rob')) {
+    if (message.content.toLowerCase().startsWith(';rob')) {
         const targetUser = message.mentions.users.first();
 
         if (!targetUser) {
