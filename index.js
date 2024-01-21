@@ -96,7 +96,7 @@ if (command === 'botinfo') {
         .addField('Ping', `${bot.ws.ping}ms`, true)
         .addField('CPU', `${cpuUsagePercentage.toFixed(2)}%`, true)
         .addField('Memory', `${(heapUsed / 1024 / 1024).toFixed(2)}MB / ${(heapTotal / 1024 / 1024).toFixed(2)}MB`, true)
-        .addField('Commands', getNumberOfCommands(), true)
+        .addField('Commands', getNumberOfCommands(14), true)
         .addField('Guilds', bot.guilds.cache.size, true)
         .addField('Users', bot.users.cache.size, true);
 
