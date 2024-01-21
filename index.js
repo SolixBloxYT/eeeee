@@ -83,57 +83,51 @@ bot.on('messageCreate', async (message) => {
         message.reply({ embeds: [uptimeEmbed] });
     }
 
-    // ;botinfo command
-if (command === 'botinfo') {
-    // Get CPU and memory usage
-    const { heapUsed, heapTotal } = process.memoryUsage();
-    const cpuUsage = process.cpuUsage();
+        // ;botinfo command
+    elif command == 'botinfo':
+        # Get CPU and memory usage
+        cpu_usage = psutil.cpu_percent()
+        memory_usage = psutil.virtual_memory()
 
-    // Calculate the CPU usage percentage
-    const cpuUsagePercentage = ((cpuUsage.user + cpuUsage.system) / 1000000) * 100;
-
-    // Replace 'getNumberOfCommands' with the actual count of your commands
-    const numberOfCommands = getNumberOfCommands(13); // Replace with your function or variable
-
-    const botInfoEmbed = new MessageEmbed()
-        .setColor('#3498db')
-        .setTitle('Bot Information')
-        .addField('Ping', `${bot.ws.ping}ms`, true)
-        .addField('CPU', `${cpuUsagePercentage.toFixed(2)}%`, true)
-        .addField('Memory', `${(heapUsed / 1024 / 1024).toFixed(2)}MB / ${(heapTotal / 1024 / 1024).toFixed(2)}MB`, true)
-        .addField('Commands', bot.numberOfCommands.toString(), true)
-        .addField('Guilds', bot.guilds.cache.size, true)
-        .addField('Users', bot.users.cache.size, true);
-
-    message.reply({ embeds: [botInfoEmbed] });
-}
-
+        bot_info_embed = MessageEmbed(
+            color=0x3498db,
+            title='Bot Information',
+            fields=[
+                ('Ping', f'{bot.latency * 1000:.2f}ms', True),
+                ('CPU Usage', f'{cpu_usage:.2f}%', True),
+                ('Memory Usage', f'{memory_usage.percent:.2f}%', True),
+                ('Commands', str(len(bot.commands)), True),
+                ('Guilds', len(bot.guilds), True),
+                ('Users', len(bot.users), True)
+            ]
+        )
+        await message.reply(embed=bot_info_embed)
 
     // ;userinfo command
-    if (command === 'userinfo') {
-        const targetUser = message.mentions.users.first() || message.author;
+    elif command == 'userinfo':
+        target_user = message.mentions[0] if message.mentions else message.author
 
-        const userInfoEmbed = new MessageEmbed()
-            .setColor('#2ecc71')
-            .setTitle('User Information')
-            .addField('User Tag', targetUser.tag, true)
-            .addField('User ID', targetUser.id, true);
-
-        message.reply({ embeds: [userInfoEmbed] });
-        return; // Do not send additional messages
-    }
+        user_info_embed = MessageEmbed(
+            color=0x2ecc71,
+            title='User Information',
+            fields=[
+                ('User Tag', target_user.name, True),
+                ('User ID', target_user.id, True)
+            ]
+        )
+        await message.reply(embed=user_info_embed)
 
     // ;serverinfo command
-    if (command === 'serverinfo') {
-        const serverInfoEmbed = new MessageEmbed()
-            .setColor('#e74c3c')
-            .setTitle('Server Information')
-            .addField('Server Name', message.guild.name, true)
-            .addField('Server ID', message.guild.id, true);
-
-        message.reply({ embeds: [serverInfoEmbed] });
-    }
-
+    elif command == 'serverinfo':
+        server_info_embed = MessageEmbed(
+            color=0xe74c3c,
+            title='Server Information',
+            fields=[
+                ('Server Name', message.guild.name, True),
+                ('Server ID', message.guild.id, True)
+            ]
+        )
+        await message.reply(embed=server_info_embed)
     // ;avatar command
     if (command === 'avatar') {
         const targetUser = message.mentions.users.first() || message.author;
@@ -246,74 +240,40 @@ if (command === 'balance') {
     }
 
    // ;banner command
-if (command === 'banner') {
-    const targetUser = message.mentions.users.first() || message.author;
+    elif command == 'banner':
+        target_user = message.mentions[0] if message.mentions else message.author
+        banner_url = target_user.banner_url_as(format='png', size=4096)
 
-    // Check if the user has a banner
-    const bannerURL = targetUser.displayAvatarURL({
-        size: 4096,
-        format: 'png', // or 'jpeg' or 'webp'
-        dynamic: true,
-    });
-
-    if (bannerURL) {
-        // Your code to use the banner URL goes here
-        // For example, you can send it in a message or embed
-        message.reply(`Here is the banner for ${targetUser.tag}: ${bannerURL}`);
-    } else {
-        message.reply(`${targetUser.tag} does not have a banner.`);
-    }
-}
+        if banner_url:
+            await message.reply(f'Here is the banner for {target_user.name}: {banner_url}')
+        else:
+            await message.reply(f'{target_user.name} does not have a banner.')
 
 
-// ;servers command
-bot.on('messageCreate', (message) => {
-    const prefix = ';'; // Your bot command prefix
-    if (message.author.bot || !message.content.startsWith(prefix)) {
-        return;
-    }
+    // ;servers command
+    elif command == 'servers':
+        servers_embed = MessageEmbed(
+            color=0x3498db,
+            title='Server Count',
+            description=f'I am in {len(bot.guilds)} servers.'
+        )
+        await message.reply(embed=servers_embed)
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if (command === 'servers') {
-        const serversEmbed = new MessageEmbed()
-            .setColor('#3498db')
-            .setTitle('Server Count')
-            .setDescription(`I am in ${bot.guilds.cache.size} servers.`);
-
-        message.reply({ embeds: [serversEmbed] });
-    }
-});
 
 // Replace 'YOUR_CLIENT_ID' with your bot's client ID
 const clientId = '1148609650334371852';
 
 // ;invite command
-bot.on('messageCreate', (message) => {
-    const prefix = ';';
+    elif command == 'invite':
+        invite_link = f'https://discord.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=YOUR_PERMISSIONS'
+        invite_embed = MessageEmbed(
+            color=0x3498db,
+            title='Invite the Bot',
+            description=f'You can invite the bot to your server using the following link:\n[{invite_link}]({invite_link})'
+        )
+        await message.reply(embed=invite_embed)
 
-    if (message.author.bot || !message.content.startsWith(prefix)) {
-        return;
-    }
-
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if (command === 'invite') {
-        // Generate the bot invite link
-        const inviteLink = `https://discord.com/oauth2/authorize?client_id=${clientId}&scope=bot&permissions=YOUR_PERMISSIONS`;
-
-        // Create an embed with the invite link
-        const inviteEmbed = new MessageEmbed()
-            .setColor('#3498db')
-            .setTitle('Invite the Bot')
-            .setDescription(`You can invite the bot to your server using the following link:\n[${inviteLink}](${inviteLink})`);
-
-        // Send the embed as a reply
-        message.reply({ embeds: [inviteEmbed] });
-    }
-});
+    await bot.process_commands(message)
     
 bot.login(process.env.token);
 
