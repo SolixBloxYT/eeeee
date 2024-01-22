@@ -32,6 +32,7 @@ bot.on('guildMemberAdd', (member) => {
     userBalances.set(member.id, 1000);
 });
 
+
 bot.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
