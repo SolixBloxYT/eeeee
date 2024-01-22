@@ -151,49 +151,52 @@ if (command === 'serverinfo') {
         message.reply({ embeds: [avatarEmbed] });
     }
 
-    // ;balance command
+   // ;balance command
 if (command === 'balance') {
     // Check if a user is mentioned
-    const targetUser = message.mentions.users.first();
+    const targetUser = message.mentions.users.first() || message.author;
+    const userId = targetUser.id;
 
-    if (!targetUser) {
-        // If no user mentioned, show balance of the message author
-        const userBalance = userBalances.get(message.author.id) || 0;
-
-        const balanceEmbed = new MessageEmbed()
-            .setColor('#f39c12')
-            .setTitle('Wallet Balance')
-            .setDescription(`Your current balance is ${userBalance} coins.`);
-
-        message.reply({ embeds: [balanceEmbed] });
-    } else {
-        // If user mentioned, show balance of the mentioned user
-        const targetBalance = userBalances.get(targetUser.id) || 0;
-
-        const targetBalanceEmbed = new MessageEmbed()
-            .setColor('#f39c12')
-            .setTitle(`${targetUser.tag}'s Wallet Balance`)
-            .setDescription(`${targetUser.tag}'s current balance is ${targetBalance} coins.`);
-
-        message.reply({ embeds: [targetBalanceEmbed] });
+    // Check if the user exists in the balance map
+    if (!userBalances.has(userId)) {
+        return message.reply('Sorry, I couldn\'t fetch the balance at the moment.');
     }
+
+    const userBalance = userBalances.get(userId);
+
+    const balanceEmbed = new MessageEmbed()
+        .setColor('#f39c12')
+        .setTitle(`${targetUser.tag}'s Wallet Balance`)
+        .setDescription(`The current balance is ${userBalance} coins.`);
+
+    message.reply({ embeds: [balanceEmbed] });
 }
+
     
-    // ;work command
-    if (command === 'work') {
-        const earnings = Math.floor(Math.random() * 200) + 1; // Random earnings between 1 and 200 coins
+// ;work command
+if (command === 'work') {
+    const earnings = Math.floor(Math.random() * 200) + 1; // Random earnings between 1 and 200 coins
 
-        // Update user balance
-        const userBalance = (userBalances.get(message.author.id) || 0) + earnings;
-        userBalances.set(message.author.id, userBalance);
+    // Update user balance
+    const userId = message.author.id;
+    const userBalance = (userBalances.get(userId) || 0) + earnings;
+    userBalances.set(userId, userBalance);
 
-        const workEmbed = new MessageEmbed()
-            .setColor('#27ae60')
-            .setTitle('Work Complete!')
-            .setDescription(`You earned ${earnings} coins for your hard work. Your new balance is ${userBalance} coins.`);
+    const workEmbed = new MessageEmbed()
+        .setColor('#27ae60')
+        .setTitle('Work Complete!')
+        .setDescription(`You earned ${earnings} coins for your hard work.`);
+    
+    const balanceEmbed = new MessageEmbed()
+        .setColor('#3498db')
+        .setTitle('New Balance')
+        .setDescription(`Your new balance is ${userBalance} coins.`);
 
-        message.reply({ embeds: [workEmbed] });
-    }
+    // Send separate embeds for clarity
+    await message.reply({ embeds: [workEmbed] });
+    await message.reply({ embeds: [balanceEmbed] });
+}
+
 
     // ;rob command
     if (command === 'rob') {
