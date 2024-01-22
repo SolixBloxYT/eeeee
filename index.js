@@ -35,17 +35,7 @@ bot.on('guildMemberAdd', (member) => {
 });
 
 bot.on('messageCreate', async (message) => {
-    if (message.author.bot) return; // Ignore messages from other bots
-
-    // Your existing command handling code here...
-
-    // Example command to change bot's status
-    if (message.content.toLowerCase() === ';setstatus') {
-        // Assuming the desired status is 'Watching Hello World!'
-        setBotStatus('WATCHING', 'Hello World!');
-        message.reply('Bot status updated!');
-    }
-});
+    if (message.author.bot) return;
 
 bot.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
@@ -300,7 +290,7 @@ if (command === 'servers') {
 // Replace 'YOUR_CLIENT_ID' with your bot's client ID
 const clientId = '1148609650334371852';
 
-// ;invite command
+// ;invite
 if (command === 'invite') {
     const invite_link = `https://discord.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8&scope=bot`;
 
@@ -314,19 +304,18 @@ if (command === 'invite') {
     await bot.process_commands(message);
 }
 
-// Example command to change bot's status
-    if (message.content.toLowerCase() === ';setstatus') {
+    // ;setstatus
+    if (interaction.commandName.toLowerCase() === 'setstatus') {
         // Assuming the desired status is 'Watching Hello World!'
         setBotStatus('WATCHING', 'Hello World!');
-        message.reply('Bot status updated!');
+        await interaction.reply('Bot status updated!');
     }
-});
 
-function setBotStatus(type = 'PLAYING', status = ';ping | @Testing Bot') {
+function setBotStatus(type = 'PLAYING', status = 'Hello World!') {
     bot.user.setActivity(status, { type: type });
 }
 
-bot.login(process.env.token);
+bot.login(token);
 
 // Function to format uptime in a human-readable way
 function formatUptime(uptime) {
